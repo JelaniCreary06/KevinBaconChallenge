@@ -1,11 +1,12 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<SimpleMovie> movies = MovieDatabaseBuilder.getMovieDB("src/movie_data");
+        Hashtable<String, String> movies = MovieDatabaseBuilder.getMovieDB("src/movie_data");
 
         ActorsDB actorsDatabase = new ActorsDB(movies);
 

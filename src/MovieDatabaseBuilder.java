@@ -1,25 +1,27 @@
 import java.io.*;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.Scanner; // Import the Scanner class to read text files
 import java.util.ArrayList;
 
 public class MovieDatabaseBuilder {
 
-    public static ArrayList<SimpleMovie> getMovieDB(String fileName) {
+    public static Hashtable<String, String> getMovieDB(String fileName) {
 
-        ArrayList<SimpleMovie> movies = new ArrayList<SimpleMovie>();
+        Hashtable<String, String> movies = new Hashtable();
         try {
-            FileWriter writer = new FileWriter("src/bacon_strip.txt", true);
-            File movieData = new File(fileName);
+            File movieData = new File(fileName), baconStrip = new File("src/bacon_strip0.txt");
+            boolean check = baconStrip.exists();
+
+            FileWriter writer = new FileWriter("src/bacon_strip0.txt", true);
             Scanner reader = new Scanner(movieData);
             while (reader.hasNextLine()) {
                 String line = reader.nextLine();
                 String[] data = line.split("---");
                 if (data.length > 1) {
-                    SimpleMovie s = new SimpleMovie(data[0], data[1]);
-                    movies.add(s);
+                    movies.put(data[0], data[1]);
 
-                    if (data[1].contains("Kevin Bacon")) writer.write(data[0]+"---"+data[1]+"\n");
+                    if (!check && data[1].contains("Kevin Bacon")) writer.write(data[0]+"---"+data[1]+"\n");
                 }
 
             }
