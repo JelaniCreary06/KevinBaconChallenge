@@ -1,22 +1,25 @@
-import java.io.File;  // Import the File class
-import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner; // Import the Scanner class to read text files
 import java.util.ArrayList;
 
 public class MovieDatabaseBuilder {
 
     public static ArrayList<SimpleMovie> getMovieDB(String fileName) {
+
         ArrayList<SimpleMovie> movies = new ArrayList<SimpleMovie>();
         try {
+            FileWriter writer = new FileWriter("src/bacon_strip.txt", true);
             File movieData = new File(fileName);
             Scanner reader = new Scanner(movieData);
             while (reader.hasNextLine()) {
                 String line = reader.nextLine();
                 String[] data = line.split("---");
                 if (data.length > 1) {
-                    if (data[1].indexOf("Kevin Bacon") != -1) System.out.println(data[0]);
                     SimpleMovie s = new SimpleMovie(data[0], data[1]);
                     movies.add(s);
+
+                    if (data[1].contains("Kevin Bacon")) writer.write(data[0]+"---"+data[1]+"\n");
                 }
 
             }
@@ -24,6 +27,8 @@ public class MovieDatabaseBuilder {
         catch (FileNotFoundException noFile) {
             System.out.println("File not found!");
             return null;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return movies;
     }
