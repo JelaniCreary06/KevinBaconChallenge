@@ -6,16 +6,15 @@ import java.io.File;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        File baconStrip = new File("src/bacon_strip0.txt"), secondStrip = new File("src/bacon_strip5.txt");
+        File baconStrip = new File("src/REFERENCE.txt"), secondStrip = new File("src/bacon_strip5.txt");
         Scanner scanner = new Scanner(System.in);
 
-        Hashtable<String, String> movies;
         ActorsDB actorsDB;
 
         if (!baconStrip.exists() || !secondStrip.exists()) {
+            final MovieDatabaseBuilder MDB = new MovieDatabaseBuilder();
 
-            movies = MovieDatabaseBuilder.getMovieDB("src/movie_data");
-            actorsDB = new ActorsDB(movies);
+            actorsDB = new ActorsDB(MDB.getMovieDB("src/movie_data"), MDB.getBaconNumberGraph());
 
             System.out.println("\nDatabases initialized, restart the program.");
         } else {
@@ -24,8 +23,16 @@ public class Main {
             do {
                 System.out.print("Enter an actor to bacon search, type \"x\" to exit: ");
                 input = scanner.nextLine();
-                System.out.println(ActorsDB.baconSearch(input) + "\n");
-            } while (!input.equalsIgnoreCase("x"));
+                if (input.equalsIgnoreCase("x") ||input.equals("daDBF")) break;
+                //else System.out.println(ActorsDB.baconSearch(input) + "\n");
+            } while (!input.equalsIgnoreCase("x") || !input.equals("daDBF"));
+
+            if (input.equals("daDBF")) {
+                for (int i = 0; i < 6; i++) {
+                    File file = new File("src/bacon_strip" + i + ".txt");
+                    file.deleteOnExit();
+                }
+            }
         }
     }
 }

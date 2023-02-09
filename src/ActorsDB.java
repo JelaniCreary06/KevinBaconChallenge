@@ -2,36 +2,39 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Scanner;
 import java.util.Arrays;
 
 public class ActorsDB {
+    private Hashtable<String, Hashtable<String, ArrayList<String>>> baconNumberGraph;
     private Hashtable<String, String> movies;
 
-    public ActorsDB(Hashtable<String, String> movies) throws IOException {
+
+    public ActorsDB(Hashtable<String, String> movies, Hashtable<String, Hashtable<String, ArrayList<String>>> baconNumberGraph) throws IOException {
         this.movies = movies;
+        this.baconNumberGraph = baconNumberGraph;
 
         File currentFile = null;
         FileWriter writer = null;
 
+        System.out.println(baconNumberGraph);
+        baconNumberGraph.get("BaconGraph-0").forEach((key, value) -> {
+
+        });
+
         for (int i = 1; i < 6; i++) {
-            String pathName = "src/bacon_strip" + i + ".txt", toCheckPath = "src/bacon_strip" + (i-1) + ".txt";
+            String pathName = "src/bacon_strip" + i + ".txt", toCheckPath = "src/bacon_strip" + (i - 1) + ".txt";
             currentFile = new File(pathName);
 
-            if (i == 1) {
 
-            }
+            /*
             if (!currentFile.exists()) {
                 writer = new FileWriter(pathName, true);
 
                 try {
-                    Scanner reader = new Scanner(new File(toCheckPath));
-                    while (reader.hasNextLine()) {
-                        String line = reader.nextLine();
-                        String[] data = line.split("---");
 
-                        String actors[] = data[1].split(":");
 
                         for (int j = 0; j < actors.length; j++) {
                             FileWriter finalWriter = writer;
@@ -49,14 +52,16 @@ public class ActorsDB {
                             });
                         }
 
-                    }
                 } catch (FileNotFoundException noFile) {
                     System.out.println(toCheckPath + " not found!");
                 }
             }
         }
-    }
 
+             */
+        }
+
+        /*
     public static String baconSearch(String actor) throws IOException {
         Scanner reader = null; String returnString = "", toSearchFor = actor;
 
@@ -83,5 +88,8 @@ public class ActorsDB {
 
         if (!returnString.equals("")) return returnString;
         return "The actor \"" + actor + "\" cannot be found.";
+    }
+
+         */
     }
 }

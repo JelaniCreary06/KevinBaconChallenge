@@ -1,17 +1,18 @@
 import java.io.*;
-import java.util.Hashtable;
-import java.util.Scanner; // Import the Scanner class to read text files
+import java.util.*;
 
 public class MovieDatabaseBuilder {
+    private  Hashtable<String, Hashtable<String, ArrayList<String>>> baconNumberGraph;
+    private Hashtable<String, ArrayList<String>> actors;
 
-    public static Hashtable<String, String> getMovieDB(String fileName) {
+    public Hashtable<String, String> getMovieDB(String fileName) {
 
         Hashtable<String, String> movies = new Hashtable();
-        try {
-            File movieData = new File(fileName), baconStrip = new File("src/bacon_strip0.txt");
-            boolean check = baconStrip.exists();
+        baconNumberGraph = new Hashtable<>();
+        actors = new Hashtable<>();
 
-            FileWriter writer = new FileWriter("src/bacon_strip0.txt", true);
+        try {
+            File movieData = new File(fileName);
             Scanner reader = new Scanner(movieData);
             while (reader.hasNextLine()) {
                 String line = reader.nextLine();
@@ -24,11 +25,32 @@ public class MovieDatabaseBuilder {
                     }
                     line = tempLine.toString();
                 }
+
+
                 String[] data = line.split("---");
                 if (data.length > 1) {
                     movies.put(data[0], data[1]);
 
-                    if (!check && data[1].contains("Kevin Bacon")) writer.write(data[0]+"---"+data[1]+"\n");
+                    if (data[1].contains("Kevin Bacon")) {
+                        if (baconNumberGraph.get("BaconGraph-0") == null) {
+                            baconNumberGraph.put("BaconGraph-0", new Hashtable<String, ArrayList<String>>(
+                                    Map.of(data[0], new ArrayList<String>(
+                                            Arrays.asList(data[1].split(":"))
+                                    ))
+                            ));
+                        } else if (baconNumberGraph.get("BaconGraph-0").get(data[0]) == null){
+                            baconNumberGraph.get("BaconGraph-0").get(data[0]).add(data[1]);
+                        }
+                        System.out.println(baconNumberGraph);
+
+                        String actorsList[] = data[1].split(":");
+                        for (int i = 0; i < actorsList.length; i++) {
+                            if (actors.get(actorsList[i]) == null) actors.put(actorsList[i], new ArrayList<>(Arrays.asList(data[0])));
+                            if (!actors.get(actorsList[i]).contains(data[0])) actors.get(actorsList[i]).add(data[0]);
+                            else System.out.println("CONTAINS");
+                            System.out.println(actors.get(actorsList[i]));
+                        }
+                    }
                 }
 
             }
@@ -41,5 +63,8 @@ public class MovieDatabaseBuilder {
         }
         return movies;
     }
+
+    public Hashtable<String, Hashtable<String, ArrayList<String>>> getBaconNumberGraph() { return this.baconNumberGraph; }
+    public Hashtable<String, ArrayList<String>> getActors() { return this.actors; }
 
 }
