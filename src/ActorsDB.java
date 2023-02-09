@@ -19,6 +19,9 @@ public class ActorsDB {
             String pathName = "src/bacon_strip" + i + ".txt", toCheckPath = "src/bacon_strip" + (i-1) + ".txt";
             currentFile = new File(pathName);
 
+            if (i == 1) {
+
+            }
             if (!currentFile.exists()) {
                 writer = new FileWriter(pathName, true);
 
@@ -64,21 +67,21 @@ public class ActorsDB {
                 String[] data = line.split("---");
                 String actors[] = data[1].split(":");
 
-                if (Arrays.asList(actors).contains(toSearchFor)) {
+                if (Arrays.asList(actors).indexOf(toSearchFor) != -1) {
                     bn++;
-                    returnString += toSearchFor + " -> " + data[0] + "-> ";
+                    returnString += toSearchFor + " -> " + data[0] + " -> ";
+
                     if (Arrays.asList(actors).contains("Kevin Bacon"))
-                        return returnString + " Kevin Bacon\nBacon number: " + bn;
+                        return returnString + " Kevin Bacon\nBacon Number: " + bn;
                     else {
-                        toSearchFor = actors[0];
+                        toSearchFor = actors[1];
                         returnString += data[0] + " ";
                     }
                 }
             }
         }
 
+        if (!returnString.equals("")) return returnString;
         return "The actor \"" + actor + "\" cannot be found.";
     }
-
-
 }

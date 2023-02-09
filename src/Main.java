@@ -1,3 +1,4 @@
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Scanner;
@@ -12,6 +13,7 @@ public class Main {
         ActorsDB actorsDB;
 
         if (!baconStrip.exists() || !secondStrip.exists()) {
+
             movies = MovieDatabaseBuilder.getMovieDB("src/movie_data");
             actorsDB = new ActorsDB(movies);
 

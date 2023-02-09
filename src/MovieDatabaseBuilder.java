@@ -15,6 +15,15 @@ public class MovieDatabaseBuilder {
             Scanner reader = new Scanner(movieData);
             while (reader.hasNextLine()) {
                 String line = reader.nextLine();
+
+                if (line.indexOf("|") != -1) {
+                    StringBuilder tempLine = new StringBuilder(line);
+                    while (tempLine.indexOf("|") != -1) {
+                        int index = tempLine.indexOf("|");
+                        tempLine.setCharAt(index, ':');
+                    }
+                    line = tempLine.toString();
+                }
                 String[] data = line.split("---");
                 if (data.length > 1) {
                     movies.put(data[0], data[1]);
