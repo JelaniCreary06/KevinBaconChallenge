@@ -1,8 +1,6 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Scanner; // Import the Scanner class to read text files
-import java.util.ArrayList;
 
 public class MovieDatabaseBuilder {
 

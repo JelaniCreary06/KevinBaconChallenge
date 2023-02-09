@@ -2,9 +2,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class ActorsDB {
     private Hashtable<String, String> movies;
@@ -37,7 +37,7 @@ public class ActorsDB {
                             movies.forEach( (key, value) -> {
                                 if (value.indexOf(actors[finalJ]) != -1) {
                                     try {
-                                        finalWriter.write("" + actors[finalJ] + "---" + movies.get(data[0]));
+                                        finalWriter.write(data[0] + "---" + movies.get(data[0]));
                                         System.out.println(actors[finalJ] + "---" + movies.get(data[0]));
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
@@ -54,15 +54,30 @@ public class ActorsDB {
         }
     }
 
-    public static String baconSearch(String actor) {
-        String returnString = "";
-        int baconNumber = 0;
+    public static String baconSearch(String actor) throws IOException {
+        Scanner reader = null; String returnString = "", toSearchFor = actor;
 
-        for (int i = 5; i > -1; i--) {
+        for (int i = 5, bn = 0; i > -1; i--) {
+            reader = new Scanner(new File("src/bacon_strip" + i + ".txt"));
+            while (reader.hasNextLine()) {
+                String line = reader.nextLine();
+                String[] data = line.split("---");
+                String actors[] = data[1].split(":");
 
+                if (Arrays.asList(actors).contains(toSearchFor)) {
+                    bn++;
+                    returnString += toSearchFor + " -> " + data[0] + "-> ";
+                    if (Arrays.asList(actors).contains("Kevin Bacon"))
+                        return returnString + " Kevin Bacon\nBacon number: " + bn;
+                    else {
+                        toSearchFor = actors[0];
+                        returnString += data[0] + " ";
+                    }
+                }
+            }
         }
 
-        return null;
+        return "The actor \"" + actor + "\" cannot be found.";
     }
 
 
