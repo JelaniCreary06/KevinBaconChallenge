@@ -5,9 +5,9 @@ public class MovieDatabaseBuilder {
     private  Hashtable<String, Hashtable<String, ArrayList<String>>> baconNumberGraph;
     private Hashtable<String, ArrayList<String>> actors;
 
-    public Hashtable<String, String> getMovieDB(String fileName) {
+    public Hashtable<String, ArrayList<String>> getMovieDB(String fileName) {
 
-        Hashtable<String, String> movies = new Hashtable();
+        Hashtable<String, ArrayList<String>> movies = new Hashtable();
         baconNumberGraph = new Hashtable<>();
         actors = new Hashtable<>();
 
@@ -26,10 +26,18 @@ public class MovieDatabaseBuilder {
                     line = tempLine.toString();
                 }
 
-
                 String[] data = line.split("---");
+
                 if (data.length > 1) {
-                    movies.put(data[0], data[1]);
+                    movies.put(data[0], new ArrayList(Arrays.asList(data[1].split(":"))));
+
+                    String actorsList[] = data[1].split(":");
+
+                    for (int i = 0; i < actorsList.length; i++) {
+                        actors.computeIfAbsent(actorsList[i], k -> new ArrayList<>(Arrays.asList(data[0])));
+                        if (!actors.get(actorsList[i]).contains(data[0])) actors.get(actorsList[i]).add(data[0]);
+                        System.out.println(actors.get(actorsList[i]));
+                    }
 
                     if (data[1].contains("Kevin Bacon")) {
                         if (baconNumberGraph.get("BaconGraph-0") == null) {
@@ -38,18 +46,13 @@ public class MovieDatabaseBuilder {
                                             Arrays.asList(data[1].split(":"))
                                     ))
                             ));
-                        } else if (baconNumberGraph.get("BaconGraph-0").get(data[0]) == null){
-                            baconNumberGraph.get("BaconGraph-0").get(data[0]).add(data[1]);
+                        } else if (baconNumberGraph.get("BaconGraph-0").get(data[0]) == null) {
+
+                            baconNumberGraph.get("BaconGraph-0").put(data[0], new ArrayList<>(
+                                    Arrays.asList(data[1].split(":"))
+                            ));
                         }
                         System.out.println(baconNumberGraph);
-
-                        String actorsList[] = data[1].split(":");
-                        for (int i = 0; i < actorsList.length; i++) {
-                            if (actors.get(actorsList[i]) == null) actors.put(actorsList[i], new ArrayList<>(Arrays.asList(data[0])));
-                            if (!actors.get(actorsList[i]).contains(data[0])) actors.get(actorsList[i]).add(data[0]);
-                            else System.out.println("CONTAINS");
-                            System.out.println(actors.get(actorsList[i]));
-                        }
                     }
                 }
 

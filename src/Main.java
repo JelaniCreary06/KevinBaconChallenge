@@ -14,7 +14,7 @@ public class Main {
         if (!baconStrip.exists() || !secondStrip.exists()) {
             final MovieDatabaseBuilder MDB = new MovieDatabaseBuilder();
 
-            actorsDB = new ActorsDB(MDB.getMovieDB("src/movie_data"), MDB.getBaconNumberGraph());
+            actorsDB = new ActorsDB(MDB.getMovieDB("src/movie_data"), MDB.getBaconNumberGraph(), MDB.getActors());
 
             System.out.println("\nDatabases initialized, restart the program.");
         } else {
